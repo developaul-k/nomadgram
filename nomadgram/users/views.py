@@ -1,52 +1,115 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from . import models, serializers
+from nomadgram.notifications import views as notification_views
 
-User = get_user_model()
+class ExploreUsers(APIView):
 
+    def get(self, request, format=None):
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+        last_five = models.User.objects.all().order_by('-date_joined')[:5]
 
-    model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
+        serializer = serializers.ListUserSerializer(last_five, many=True)
 
-
-user_detail_view = UserDetailView.as_view()
-
-
-class UserListView(LoginRequiredMixin, ListView):
-
-    model = User
-    slug_field = "username"
-    slug_url_kwarg = "username"
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-user_list_view = UserListView.as_view()
+class FollowUser(APIView):
+
+    def post(self, request, user_id, format=None):
+
+        user = request.user
+
+        try:
+            user_to_follow = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user.following.add(user_to_follow)
+
+        user.save()
+
+        notification_views.create_notification(user, user_to_follow, 'follow')
+
+        return Response(status=status.HTTP_200_OK)
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UnFollowUser(APIView):
 
-    model = User
-    fields = ["name"]
+    def post(self, request, user_id, format=None):
 
-    def get_success_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        user = request.user
 
-    def get_object(self):
-        return User.objects.get(username=self.request.user.username)
+        try:
+            user_to_follow = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
+        user.following.remove(user_to_follow)
 
-user_update_view = UserUpdateView.as_view()
+        user.save()
 
+        return Response(status=status.HTTP_200_OK)
 
-class UserRedirectView(LoginRequiredMixin, RedirectView):
+class UserProfile(APIView):
 
-    permanent = False
+    def get(self, request, username, format=None):
 
-    def get_redirect_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        try:
+            found_user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
+        serialzier = serializers.UserProfileSerializer(found_user)
 
-user_redirect_view = UserRedirectView.as_view()
+        return Response(data = serialzier.data, status=status.HTTP_200_OK)
+
+class UserFollowers(APIView):
+
+    def get(self, request, username, format=None):
+
+        try:
+            found_user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user_followers = found_user.followers.all()
+
+        serializer = serializers.ListUserSerializer(user_followers, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+class UserFollowing(APIView):
+
+    def get(self, request, username, format=None):
+
+        try:
+            found_user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        user_following = found_user.following.all()
+
+        serializer = serializers.ListUserSerializer(user_following, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+class Search(APIView):
+
+    def get(self, request, format=None):
+
+        username = request.query_params.get('username', None)
+
+        print(username)
+
+        if username is not None:
+
+            users = models.User.objects.filter(username__istartswith=username)
+
+            serializer = serializers.ListUserSerializer(users, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
