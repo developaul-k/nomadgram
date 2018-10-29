@@ -5,7 +5,7 @@ app_name = "feed"
 urlpatterns = [
     path(
          "",
-         view=views.Feed.as_view(),
+         view=views.Images.as_view(),
          name="feed"
     ),
     path(
