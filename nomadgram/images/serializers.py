@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from . import models
 from nomadgram.users import models as user_models
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
 
 class SmallImageSerializer(serializers.ModelSerializer):
 
@@ -50,10 +52,11 @@ class LikeSerializer(serializers.ModelSerializer):
         model = models.Like
         fields = '__all__'
 
-class ImageSerializer(serializers.ModelSerializer):
+class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     comments = CommentSerializer(many=True) # 모델 B, C가 A를 포린키로 바라보고 있을 때 자동으로 _set이 생성됨 model에서 related_name 지정해 놓고 이곳에서 시리얼라이저로 등록하면 연결된 모든 애들이 나옴
     creator = FeedUserSerializer()
+    tags = TagListSerializerField()
 
     class Meta:
         model = models.Image
@@ -65,5 +68,16 @@ class ImageSerializer(serializers.ModelSerializer):
             'comments',
             'like_count',
             'creator',
-            'created_at'
+            'tags',
+            'created_at',
+        )
+
+class InputImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Image
+        fields = (
+            'file',
+            'location',
+            'caption',
         )

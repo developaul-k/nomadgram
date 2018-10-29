@@ -67,7 +67,9 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework', # REST framework
+    'rest_framework.authtoken',
     'taggit', # Tags for the photos
+    'taggit_serializer' # Tag serializer
 ]
 LOCAL_APPS = [
     'nomadgram.users.apps.UsersAppConfig',
@@ -241,3 +243,14 @@ SOCIALACCOUNT_ADAPTER = 'nomadgram.users.adapters.SocialAccountAdapter'
 # Your stuff...
 # ------------------------------------------------------------------------------
 TAGGIT_CASE_INSENSITIVE = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
