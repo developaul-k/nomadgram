@@ -376,13 +376,19 @@ module.exports = {
           {
             test: sassRegex,
             exclude: sassModuleRegex,
-            loader: getStyleLoaders(
-              {
+            loader: getStyleLoaders({
                 importLoaders: 2,
                 sourceMap: shouldUseSourceMap,
-              },
-              'sass-loader'
-            ),
+                modules: true,
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                camelCase: "dashes" // scss 클래스 명을 list-item으로 한 경우 listItem 으로 사용 가능하게 하기 위해
+            }).concat({
+              loader: require.resolve('sass-loader'),
+              options: {
+                includePaths: [paths.appSrc + '/config'],
+                data: `@import '_variables';`
+              }
+            }),
             // Don't consider CSS imports dead code even if the
             // containing package claims to have no side effects.
             // Remove this when webpack adds a warning or an error for this.
@@ -399,6 +405,7 @@ module.exports = {
                 sourceMap: shouldUseSourceMap,
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
+                camelCase: "dashes" // scss 클래스 명을 list-item으로 한 경우 listItem 으로 사용 가능하게 하기 위해
               },
               'sass-loader'
             ),

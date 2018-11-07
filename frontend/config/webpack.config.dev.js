@@ -286,7 +286,6 @@ module.exports = {
             test: cssModuleRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              modules: true,
               getLocalIdent: getCSSModuleLocalIdent,
             }),
           },
@@ -298,7 +297,18 @@ module.exports = {
           {
             test: sassRegex,
             exclude: sassModuleRegex,
-            use: getStyleLoaders({ importLoaders: 2 }, 'sass-loader'),
+            use: getStyleLoaders({ 
+              importLoaders: 2,
+              modules: true,
+              localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              camelCase: "dashes" // scss 클래스 명을 list-item으로 한 경우 listItem 으로 사용 가능하게 하기 위해
+            }).concat({
+              loader: require.resolve('sass-loader'),
+              options: {
+                includePaths: [paths.appSrc + '/config'],
+                data: `@import '_variables';`
+              }
+            }),
           },
           // Adds support for CSS Modules, but using SASS
           // using the extension .module.scss or .module.sass
@@ -309,6 +319,7 @@ module.exports = {
                 importLoaders: 2,
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
+                camelCase: "dashes" // scss 클래스 명을 list-item으로 한 경우 listItem 으로 사용 가능하게 하기 위해
               },
               'sass-loader'
             ),
