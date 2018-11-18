@@ -5,6 +5,7 @@ import createHistory from 'history/createBrowserHistory';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { i18nState } from 'redux-i18n';
 import user from 'redux/modules/user';
+import photos from 'redux/modules/photos';
 // import Reactotron from 'ReactotronConfig';
 
 const env = process.env.NODE_ENV;
@@ -20,8 +21,10 @@ if (env === 'development') {
     middlewares.push(logger);
 }
 
+/* 이곳에 리듀서 추가 */
 const reducer = combineReducers({
-    user, /* 이곳에 리듀서 추가 */
+    user,
+    photos,
     routing: routerReducer,
     i18nState
 });

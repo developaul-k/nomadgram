@@ -1,0 +1,14 @@
+.photo-comments {
+	margin: 10px 0;
+	.comments-list {
+		& + .comments-list {
+			margin-top: 10px;
+		}
+	}
+	.comment-author {
+		margin-right: 5px;
+	}
+	.comment-text {
+		font-weight: 300;
+	}
+}
