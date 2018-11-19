@@ -24,7 +24,7 @@ class Images(APIView):
             for image in user_images:
                 image_list.append(image)
 
-        my_images = user.images.all()
+        my_images = user.images.all()[:2]
 
         for image in my_images:
 
@@ -59,7 +59,7 @@ class LikeImage(APIView):
 
         users = user_models.User.objects.filter(id__in=like_creators_id)
 
-        serializer = user_serializers.ListUserSerializer(users, many=True)
+        serializer = user_serializers.ListUserSerializer(users, many=True, context={"request": request})
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
