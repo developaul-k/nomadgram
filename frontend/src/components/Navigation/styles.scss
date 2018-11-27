@@ -17,34 +17,35 @@
 			align-items: center;
 			width: 33%;
 			&:first-child {
-			justify-content: flex-start;
+				justify-content: flex-start;
 			}
 			&:last-child {
-			justify-content: flex-end;
+				justify-content: flex-end;
 			}
 			.logo {
-			max-width: 125px;
+				max-width: 125px;
 			}
 			.search-input {
-			width: 215px;
-			box-sizing: border-box;
-			padding: 5px;
-			border: solid 1px #dbdbdb;
-			border-radius: 3px;
-			background-color: #fafafa;
-			font-size: $normal-font-size;
-			font-weight: 300;
-			&::placeholder {
-				color: $dark-grey;
-			}
-			&:focus {
-				outline: none;
-				background-color: white;
-			}
+				width: 215px;
+				box-sizing: border-box;
+				padding: 5px;
+				border: solid 1px #dbdbdb;
+				border-radius: 3px;
+				background-color: #fafafa;
+				font-size: $normal-font-size;
+				font-weight: 300;
+				&::placeholder {
+					color: $dark-grey;
+				}
+				&:focus {
+					outline: none;
+					background-color: white;
+				}
 			}
 			.nav-icon {
-			margin-left: 30px;
-			cursor: pointer;
+				margin-left: 30px;
+				position: relative;
+				cursor: pointer;
 			}
 		}
 	}

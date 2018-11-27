@@ -3,6 +3,7 @@ import Ionicon from "react-ionicons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styles from "./styles.scss";
+import Notifications from 'components/Notifications';
 
 const Navigation = (props, context) => (
 	<div className={styles.navigation}>
@@ -17,11 +18,15 @@ const Navigation = (props, context) => (
 			</Link>
 		</div>
 		<div className={styles.column}>
-			<input
-				type="text"
-				placeholder={context.t("Search")}
-				className={styles.searchInput}
-			/>
+			<form onSubmit={props.onSubmit}>
+				<input
+					type="text"
+					placeholder={context.t("Search")}
+					className={styles.searchInput}
+					onChange={props.onInputChange}
+					value={props.value}
+				/>
+			</form>
 		</div>
 		<div className={styles.column}>
 			<div className={styles.navIcon}>
@@ -29,8 +34,11 @@ const Navigation = (props, context) => (
 				<Ionicon icon="ios-compass-outline" fontSize="28px" color="black" />
 				</Link>
 			</div>
-			<div className={styles.navIcon}>
+			<div className={styles.navIcon} onClick={props.ctrlNotification}>
 				<Ionicon icon="ios-heart-outline" fontSize="28px" color="black" />
+				<div>
+					{props.seeingNotifications && <Notifications {...props} />}
+				</div>
 			</div>
 			<div className={styles.navIcon}>
 				<Link to="/profile">
@@ -45,5 +53,12 @@ const Navigation = (props, context) => (
 Navigation.contextTypes = {
 	t: PropTypes.func.isRequired
 };
+
+Navigation.propTypes = {
+	onSubmit: PropTypes.func.isRequired,
+	onInputChange: PropTypes.func.isRequired,
+	ctrlNotification: PropTypes.func.isRequired,
+	value: PropTypes.string.isRequired
+}
 
 export default Navigation;
