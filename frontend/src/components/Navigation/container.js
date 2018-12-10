@@ -5,19 +5,22 @@ import Navigation from "./presenter";
 class Container extends Component {
 	state = {
 		term: "",
-		seeingNotifications: false
+		seeingNotification: false
 	}
 	static propTypes = {
-		goToSearch: PropTypes.func.isRequired
+		goToSearch: PropTypes.func.isRequired,
+		notificationList: PropTypes.array
 	}
 	render() {
 		return (
 			<Navigation
 				onSubmit={this._onSubmit}
 				onInputChange={this._onInputChange}
-				ctrlNotification={this._ctrlNotification}
+				openNotification={this._openNotification}
+				closeNotification={this._closeNotification}
 				value={this.state.term}
 				{...this.state}
+				{...this.props}
 			/>
 		);
 	}
@@ -38,18 +41,21 @@ class Container extends Component {
 			})
 		}
 	}
-	_ctrlNotification = () => {
-		const { seeingNotifications } = this.state;
+	_openNotification = () => {
+		const { getNotification } = this.props;
 
-		if ( seeingNotifications ) {
-			this.setState({
-				seeingNotifications: false
-			});
-		} else {
-			this.setState({
-				seeingNotifications: true
-			});
-		}
+		this.setState({
+			seeingNotification: true
+		});
+
+		getNotification();
+	}
+
+	_closeNotification = () => {
+
+		this.setState({
+			seeingNotification: false
+		});
 	}
 }
 

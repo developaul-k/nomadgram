@@ -125,6 +125,26 @@ function commentPhoto(photoId, message) {
 	}
 }
 
+function getFeedDetail(photoId) {
+	return (dispatch, getState) => {
+		const { user: { token } } = getState();
+		fetch(`/images/${photoId}/`, {
+			headers: {
+				Authorization: `jwt ${token}`
+			}
+		})
+		.then(response => {
+			if(response.status === 401){
+				dispatch(userActions.logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch(setFeed(json))
+		})
+	}
+}
+
 
 // initial state
 const initialState = {}
@@ -157,43 +177,71 @@ function applySetFeed(state, action){
 function applyLikePhoto(state, action){
 	const { photoId } = action;
 	const { feed } = state;
-	const updatedFeed = feed.map(photo => {
-		if (photo.id === photoId){
-			return {
-				...photo,
-				is_liked: true,
-				like_count: photo.like_count + 1
+	let updatedFeed;
+	if ( Array.isArray(feed) ) {
+		updatedFeed = feed.map(photo => {
+			if (photo.id === photoId){
+				return {
+					...photo,
+					is_liked: true,
+					like_count: photo.like_count + 1
+				}
 			}
+			return photo;
+		})
+	} else {
+		updatedFeed = {
+			...feed,
+			is_liked: true,
+			like_count: feed.like_count + 1
 		}
-		return photo;
-	})
+	}
+
 	return {...state, feed: updatedFeed};
 }
 
 function applyUnlikePhoto(state, action){
 	const { photoId } = action;
 	const { feed } = state;
-	const updatedFeed = feed.map(photo => {
-		if(photo.id === photoId) {
-			return { ...photo, is_liked: false, like_count: photo.like_count - 1 }
+	let updatedFeed;
+	if ( Array.isArray(feed) ) {
+		updatedFeed = feed.map(photo => {
+			if(photo.id === photoId) {
+				return { ...photo, is_liked: false, like_count: photo.like_count - 1 }
+			}
+			return photo;
+		})
+	} else {
+		updatedFeed = {
+			...feed,
+			is_liked: false,
+			like_count: feed.like_count - 1
 		}
-		return photo;
-	})
+	}
 	return {...state, feed: updatedFeed};
 }
 
 function applyAddComment(state, action){
 	const { photoId, comment } = action;
 	const { feed } = state;
-	const updatedFeed = feed.map(photo => {
-		if(photo.id === photoId) {
-			return {
-				...photo,
-				comments: [...photo.comments, comment]
+	let updatedFeed;
+
+	if ( Array.isArray(feed) ) {
+		updatedFeed = feed.map(photo => {
+			if(photo.id === photoId) {
+				return {
+					...photo,
+					comments: [...photo.comments, comment]
+				}
 			}
+			return photo;
+		})
+	} else {
+		updatedFeed = {
+			...feed,
+			comments: [...feed.comments, comment]
 		}
-		return photo;
-	})
+	}
 	return {...state, feed: updatedFeed};
 }
 
@@ -202,7 +250,8 @@ const actionCreators = {
 	getFeed,
 	likePhoto,
 	unlikePhoto,
-	commentPhoto
+	commentPhoto,
+	getFeedDetail
 }
 
 export { actionCreators }

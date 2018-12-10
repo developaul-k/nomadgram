@@ -24,7 +24,8 @@ class Container extends Component{
 		getPhotoLikes();
 	}
 
-	_closeLikes = () => {
+	_closeLikes = event => {
+		event.stopPropagation();
 		this.setState({
 			seeingLikes: false
 		})

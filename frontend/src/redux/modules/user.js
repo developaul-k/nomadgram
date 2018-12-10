@@ -1,5 +1,5 @@
 // imports
-
+import { push } from 'react-router-redux';
 // actions
 const SAVE_TOKEN = "SAVE_TOKEN";
 const LOGOUT = 'LOGOUT';
@@ -7,12 +7,15 @@ const SET_USER_LIST = "SET_USER_LIST";
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
 const SET_IMAGE_LIST = "SET_IMAGE_LIST";
+const SET_NOTIFICATION_LIST = "SET_NOTIFICATION_LIST";
+const GET_USER_PROFILE = "GET_USER_PROFILE";
 
 // action creators
-function saveToken(token) {
+function saveToken(token, username) {
 	return {
 		type: SAVE_TOKEN,
-		token
+		token,
+		username
 	}
 }
 
@@ -50,6 +53,20 @@ function setImageList(imageList){
 	}
 }
 
+function setUserProfile(userProfile) {
+	return {
+		type: GET_USER_PROFILE,
+		userProfile
+	}
+}
+
+function setNotification(notificationList){
+	return {
+		type: SET_NOTIFICATION_LIST,
+		notificationList
+	}
+}
+
 // API actions
 function facebookLogin(access_token) {
 	return dispatch => {
@@ -65,7 +82,7 @@ function facebookLogin(access_token) {
 			.then(response => response.json())
 			.then(json => {
 				if (json.token) {
-					dispatch(saveToken(json.token));
+					dispatch(saveToken(json.token, json.user.username));
 				}
 			})
 			.catch(err => console.log(err));
@@ -87,7 +104,7 @@ function usernameLogin(username, password) {
 			.then(response => response.json())
 			.then(json => {
 				if (json.token) {
-					dispatch(saveToken(json.token));
+					dispatch(saveToken(json.token, username));
 				}
 			})
 			.catch(err => console.log(err))
@@ -159,6 +176,7 @@ function followUser(userId) {
 		})
 	}
 }
+
 function unfollowUser(userId) {
 	return (dispatch, getState) => {
 		dispatch(setUnfollowUser(userId));
@@ -208,6 +226,7 @@ function searchByTerm(searchTerm){
 
 		if (userList === 401 || imageList === 401){
 			dispatch(logout());
+			dispatch(push('/'))
 		}
 		dispatch(setUserList(userList));
 		dispatch(setImageList(imageList));
@@ -244,10 +263,97 @@ function searchImages(token, searchTerm) {
 	.then(json => json)
 }
 
+function getNotification() {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch('/notifications/',{
+			headers: {
+				"Authorization": `JWT ${token}`
+			}
+		})
+		.then(response => {
+			if(response.status === 401){
+				dispatch(logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch(setNotification(json));
+		});
+	}
+}
+
+function getProfile(username) {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch(`/users/${username}/`, {
+			method: "GET",
+			headers: {
+				Authorization: `JWT ${token}`,
+				"Content-Type": "application/json"
+			}
+		})
+		.then(response => {
+			if(response.status === 401) {
+				dispatch(logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch(setUserProfile(json));
+		})
+	}
+}
+
+function getFollower(username) {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch(`/users/${username}/followers/`, {
+			method: "GET",
+			headers: {
+				Authorization: `JWT ${token}`,
+				"Content-Type": "application/json"
+			}
+		})
+		.then(response => {
+			if(response.status === 401) {
+				dispatch(logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch(setUserList(json));
+		})
+	}
+}
+
+function getFollowing(username) {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch(`/users/${username}/following/`, {
+			method: "GET",
+			headers: {
+				Authorization: `JWT ${token}`,
+				"Content-Type": "application/json"
+			}
+		})
+		.then(response => {
+			if(response.status === 401) {
+				dispatch(logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch(setUserList(json));
+		})
+	}
+}
+
 // initial state
 const initialState = {
 	isLoggedIn: localStorage.getItem('jwt') ? true : false,
-	token: localStorage.getItem('jwt')
+	token: localStorage.getItem('jwt'),
+	username: localStorage.getItem('username') ? localStorage.getItem('username') : null
 }
 
 // reducer
@@ -265,6 +371,10 @@ function reducer(state = initialState, action) {
 			return applyUnfollowUser(state, action);
 		case SET_IMAGE_LIST:
 			return applySetImageList(state, action);
+		case SET_NOTIFICATION_LIST:
+			return applySetnotificationList(state, action);
+		case GET_USER_PROFILE:
+			return applyGetUserProfile(state, action);
 		default:
 			return state;
 	}
@@ -274,13 +384,16 @@ function reducer(state = initialState, action) {
 
 function applySetToken(state, action) {
 	const {
-		token
+		token,
+		username
 	} = action;
 	localStorage.setItem("jwt", token);
+	localStorage.setItem("username", username);
 	return {
 		...state,
 		isLoggedIn: true,
-		token
+		token,
+		username
 	}
 }
 
@@ -302,25 +415,50 @@ function applySetUserList(state, action) {
 
 function applyFollowUser(state, action) {
 	const { userId } = action;
-	const { userList } = state;
+	const { userList, userProfile } = state;
 	const updatedUserList = userList.map(user => {
 		if (user.id === userId) {
-			return {...user, following: true}
+			return {
+				...user,
+				following: true
+			}
 		}
 		return user
 	})
-	return { ...state, userList: updatedUserList }
+
+	if ( userProfile ) {
+		const updatedUserProfile = {
+			...userProfile,
+			following_count: userProfile.following_count + 1
+		}
+		return { ...state, userList: updatedUserList, userProfile: updatedUserProfile }
+	} else {
+		return { ...state, userList: updatedUserList }
+	}
 }
+
 function applyUnfollowUser(state, action) {
 	const { userId } = action;
-	const { userList } = state;
+	const { userList, userProfile } = state;
 	const updatedUserList = userList.map(user => {
 		if (user.id === userId) {
-			return {...user, following: false}
+			return {
+				...user,
+				following: false
+			}
 		}
 		return user
 	})
-	return { ...state, userList: updatedUserList }
+
+	if ( userProfile ) {
+		const updatedUserProfile = {
+			...userProfile,
+			following_count: userProfile.following_count -1
+		}
+		return { ...state, userList: updatedUserList, userProfile: updatedUserProfile }
+	} else {
+		return { ...state, userList: updatedUserList }
+	}
 }
 
 function applySetImageList(state, action) {
@@ -332,6 +470,22 @@ function applySetImageList(state, action) {
 	}
 }
 
+function applySetnotificationList(state, action) {
+	const { notificationList } = action;
+
+	return {
+		...state,
+		notificationList
+	}
+}
+
+function applyGetUserProfile(state, action) {
+	const { userProfile } = action;
+	return {
+		...state,
+		userProfile
+	}
+}
 // exports
 const actionCreators = {
 	facebookLogin,
@@ -342,7 +496,11 @@ const actionCreators = {
 	followUser,
 	unfollowUser,
 	getExplore,
-	searchByTerm
+	searchByTerm,
+	getNotification,
+	getProfile,
+	getFollower,
+	getFollowing
 }
 
 export {

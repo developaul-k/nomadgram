@@ -6,19 +6,9 @@ class Container extends Component{
 	state = {
 		loading: true
 	}
-	static propTypes = {
-		getFeed: PropTypes.func.isRequired,
-		feed: PropTypes.array
-	}
 	componentDidMount() {
 		const { getFeed } = this.props;
-		if (!this.props.feed) {
-			getFeed();
-		} else {
-			this.setState({
-				loading: false
-			})
-		}
+		getFeed();
 	}
 	componentWillReceiveProps = nextProps => {
 		if ( nextProps.feed ) {
@@ -30,6 +20,13 @@ class Container extends Component{
 	render(){
 		const { feed } = this.props;
 		return <Feed {...this.state} feed={feed} />
+	}
+	static propTypes = {
+		getFeed: PropTypes.func.isRequired,
+		feed: PropTypes.oneOfType([
+			PropTypes.object,
+			PropTypes.array
+		])
 	}
 }
 

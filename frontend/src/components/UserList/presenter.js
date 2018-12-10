@@ -7,6 +7,7 @@ import UserDisplay from 'components/UserDisplay';
 
 const UserList = props => (
 	<div className={styles.container}>
+		<div className={styles.mask} onClick={props.closeLikes}></div>
 		<div className={styles.box}>
 			<header className={styles.header}>
 				<h4 className={styles.title}>{props.title}</h4>

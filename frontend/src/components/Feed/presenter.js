@@ -27,7 +27,10 @@ const RenderFeed = props => (
 
 Feed.propTypes = {
 	loading: PropTypes.bool.isRequired,
-	feed: PropTypes.array
+	feed: PropTypes.oneOfType([
+		PropTypes.object,
+		PropTypes.array
+	])
 }
 
 export default Feed;

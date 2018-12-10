@@ -26,11 +26,35 @@
 			display: flex;
 			flex-direction: column;
 			.creator {
-			font-weight: 600;
-			margin-bottom: 5px;
+				font-weight: 600;
+				margin-bottom: 5px;
+				a {
+					font-weight: 600;
+					text-decoration: none;
+					font-size: inherit;
+					color: inherit;
+				}
 			}
 			.location {
 			font-size: $small-font-size;
+			}
+		}
+	}
+	&.feed-photo-row {
+		max-width: $max-detail-card-width;
+		.contentBox {
+			display: flex;
+			.feed-image {
+				width: 60%;
+				img {
+					width: 100%;
+				}
+			}
+			.meta {
+				width: 40%;
+				.header {
+					padding: 5px 0 15px;
+				}
 			}
 		}
 	}
@@ -38,5 +62,15 @@
 		padding: 15px;
 		padding-bottom: 0;
 		padding-top: 10px;
+		.time-stamp {
+			font-size: 10px;
+			color: #999;
+		}
+		.caption {
+			font-weight: 300;
+			strong {
+				font-weight: 700;
+			}
+		}
 	}
 }

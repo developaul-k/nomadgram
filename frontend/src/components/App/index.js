@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import Container from './container';
 
 const mapStateToProps = ( state, ownProps ) => {
-	const { user, routing : {location} } = state;
+	const { user } = state;
 	return {
-		isLoggedIn: user.isLoggedIn,
-		pathname: location.pathname
+		isLoggedIn: user.isLoggedIn
 	}
 }
 
-export default connect(mapStateToProps)(Container);
+export default withRouter(connect(mapStateToProps)(Container));

@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Ionicon from 'react-ionicons';
 import styles from './styles.scss';
 
 const PhotoDisplay = props => (
 	<div className={styles.container}>
 		<img src={props.photo.file} className={styles.photo} alt="임시" />
-		<div className={styles.overlay}>
+		<Link to={{
+			pathname: `/images/${props.photo.id}`,
+			state: { modal: true }
+		}} className={styles.overlay}>
 			<span className={styles.data}>
 				<Ionicon icon="ios-heart" fontSize="22px" color="white" /> {" "}
 				{props.photo.like_count}
@@ -15,7 +19,7 @@ const PhotoDisplay = props => (
 				<Ionicon icon="ios-text" fontSize="22px" color="white" /> {" "}
 				{props.photo.comment_count}
 			</span>
-		</div>
+		</Link>
 	</div>
 );
 

@@ -8,34 +8,34 @@ import PhotoDisplay from "components/PhotoDisplay";
 const Search = (props, context) => {
 	return (
 		<div className={styles.search}>
-		<div className={styles.section}>
-			<h4 className={styles.title}>{context.t("Users")}</h4>
-			{props.loading && <Loading />}
-			{!props.loading &&
-				props.userList.length < 1 && (
-				<NotFound text={context.t("Nothing found :(")} />
-				)}
-			<div className={styles.content}>
+			<div className={styles.section}>
+				<h4 className={styles.title}>{context.t("Users")}</h4>
+				{props.loading && <Loading />}
 				{!props.loading &&
-				props.userList.length > 0 && (
-					<RenderUserSearch userList={props.userList} />
-				)}
+					props.userList.length < 1 && (
+					<NotFound text={context.t("Nothing found :(")} />
+					)}
+				<div className={styles.content}>
+					{!props.loading &&
+					props.userList.length > 0 && (
+						<RenderUserSearch userList={props.userList} />
+					)}
+				</div>
 			</div>
-		</div>
-		<div className={styles.section}>
-			<h4 className={styles.title}>{context.t("Photos")}</h4>
-			{props.loading && <Loading />}
-			{!props.loading &&
-				props.imageList.length < 1 && (
-				<NotFound text={context.t("Nothing found :(")} />
-				)}
-			<div className={styles.content}>
+			<div className={styles.section}>
+				<h4 className={styles.title}>{context.t("Photos")}</h4>
+				{props.loading && <Loading />}
 				{!props.loading &&
-				props.imageList.length > 0 && (
-					<RenderImageSearch imageList={props.imageList} />
-				)}
+					props.imageList.length < 1 && (
+					<NotFound text={context.t("Nothing found :(")} />
+					)}
+				<div className={styles.content}>
+					{!props.loading &&
+					props.imageList.length > 0 && (
+						<RenderImageSearch imageList={props.imageList} />
+					)}
+				</div>
 			</div>
-		</div>
 		</div>
 	);
 };

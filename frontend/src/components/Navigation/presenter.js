@@ -3,7 +3,7 @@ import Ionicon from "react-ionicons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styles from "./styles.scss";
-import Notifications from 'components/Notifications';
+import Notification from 'components/Notification';
 
 const Navigation = (props, context) => (
 	<div className={styles.navigation}>
@@ -34,16 +34,16 @@ const Navigation = (props, context) => (
 				<Ionicon icon="ios-compass-outline" fontSize="28px" color="black" />
 				</Link>
 			</div>
-			<div className={styles.navIcon} onClick={props.ctrlNotification}>
+			<div className={styles.navIcon} onClick={props.openNotification}>
 				<Ionicon icon="ios-heart-outline" fontSize="28px" color="black" />
-				<div>
-					{props.seeingNotifications && <Notifications {...props} />}
-				</div>
 			</div>
 			<div className={styles.navIcon}>
-				<Link to="/profile">
+				<Link to={`/users/${props.username}`}>
 				<Ionicon icon="ios-person-outline" fontSize="32px" color="black" />
 				</Link>
+			</div>
+			<div>
+				{props.seeingNotification && <Notification {...props} />}
 			</div>
 		</div>
 		</div>
@@ -57,8 +57,10 @@ Navigation.contextTypes = {
 Navigation.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
 	onInputChange: PropTypes.func.isRequired,
-	ctrlNotification: PropTypes.func.isRequired,
-	value: PropTypes.string.isRequired
+	openNotification: PropTypes.func.isRequired,
+	closeNotification: PropTypes.func.isRequired,
+	value: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired
 }
 
 export default Navigation;
