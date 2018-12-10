@@ -15,6 +15,13 @@ class Container extends Component {
 		getFeedDetail();
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		const { getFeedDetail } = this.props;
+		if(prevProps.match.params !== this.props.match.params){
+			getFeedDetail();
+		}
+	}
+
 	componentWillReceiveProps = nextProps => {
 		if ( nextProps.feed ) {
 			this.setState({
