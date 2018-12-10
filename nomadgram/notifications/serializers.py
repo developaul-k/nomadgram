@@ -15,6 +15,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             'comment',
             'natural_time',
             'creator',
+            'image_id',
             'id',
             'image',
             'notification_type',

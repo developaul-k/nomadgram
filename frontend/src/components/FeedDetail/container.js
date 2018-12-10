@@ -12,14 +12,7 @@ class Container extends Component {
 
 	componentDidMount() {
 		const { getFeedDetail } = this.props;
-
-		if (!this.props.feed) {
-			getFeedDetail();
-		} else {
-			this.setState({
-				loading: false
-			})
-		}
+		getFeedDetail();
 	}
 
 	componentWillReceiveProps = nextProps => {
@@ -31,7 +24,10 @@ class Container extends Component {
 	}
 	static propTypes = {
 		getFeedDetail: PropTypes.func.isRequired,
-		feed: PropTypes.object,
+		feed: PropTypes.oneOfType([
+			PropTypes.object,
+			PropTypes.array
+		])
 	}
 }
 

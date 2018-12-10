@@ -44,10 +44,12 @@
 		max-width: $max-detail-card-width;
 		.contentBox {
 			display: flex;
+			align-items: flex-start;
 			.feed-image {
 				width: 60%;
 				img {
 					width: 100%;
+					vertical-align: top;
 				}
 			}
 			.meta {
@@ -55,6 +57,14 @@
 				.header {
 					padding: 5px 0 15px;
 				}
+				.caption {
+					margin-top: 15px;
+				}
+			}
+			.comment-box {
+				height: 267px;
+				overflow-x: hidden;
+				overflow-y: auto;
 			}
 		}
 	}
