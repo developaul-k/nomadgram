@@ -27,11 +27,13 @@ const FeedPhoto = (props, context) => {
 						<p className={styles.caption}>
 							<strong>{props.creator.username}</strong>	{props.caption}
 						</p>
-						<PhotoComments
-							caption={props.caption}
-							creator={props.creator.username}
-							comments={props.comments}
-						/>
+						<div className={styles.commentBox}>
+							<PhotoComments
+								caption={props.caption}
+								creator={props.creator.username}
+								comments={props.comments}
+							/>
+						</div>
 						<span className={styles.timeStamp}>
 							<TimeStamp time={props.natural_time} />
 						</span>

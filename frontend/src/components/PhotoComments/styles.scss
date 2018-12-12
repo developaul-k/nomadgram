@@ -1,14 +1,27 @@
-.photo-comments {
-	margin: 15px 0 10px;
-	.comments-list {
-		& + .comments-list {
-			margin-top: 10px;
+.photo-comments-box {
+	.photo-comments {
+		.comments-list {
+			& + .comments-list {
+				margin-top: 10px;
+			}
+		}
+		.comment-author {
+			margin-right: 5px;
+		}
+		.comment-text {
+			font-weight: 300;
 		}
 	}
-	.comment-author {
-		margin-right: 5px;
-	}
-	.comment-text {
-		font-weight: 300;
+	.comments-toggle {
+		margin-bottom: 10px;
+		padding: 0;
+		border: none;
+		background-color: #fff;
+		font-size: 14px;
+		font-weight: 500;
+		color: #999;
+		&.is-active {
+			display: none;
+		}
 	}
 }

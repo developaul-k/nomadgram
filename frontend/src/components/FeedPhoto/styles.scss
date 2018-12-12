@@ -42,7 +42,7 @@
 	}
 	&.feed-photo-row {
 		max-width: $max-detail-card-width;
-		.contentBox {
+		.content-box {
 			display: flex;
 			align-items: flex-start;
 			.feed-image {
@@ -61,11 +61,6 @@
 					margin-top: 15px;
 				}
 			}
-			.comment-box {
-				height: 267px;
-				overflow-x: hidden;
-				overflow-y: auto;
-			}
 		}
 	}
 	.meta {
@@ -82,5 +77,8 @@
 				font-weight: 700;
 			}
 		}
+	}
+	.comment-box {
+		margin: 15px 0 10px;
 	}
 }
