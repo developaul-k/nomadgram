@@ -48,7 +48,6 @@ class Images(APIView):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LikeImage(APIView):
 
     def get(self, request, image_id, format=None):
@@ -91,8 +90,9 @@ class LikeImage(APIView):
 
             new_like.save()
 
-            notification_views.create_notification(
-                user, found_image.creator, 'like', image_id, found_image)
+            if found_image.creator != user :
+                notification_views.create_notification(
+                    user, found_image.creator, 'like', image_id, found_image)
 
             return Response(status=status.HTTP_201_CREATED)
 
@@ -122,7 +122,6 @@ class UnLikeImage(APIView):
 
             return Response(status=status.HTTP_304_NOT_MODIFIED)
 
-
 class CommentOnImage(APIView):
 
     def post(self, request, image_id, format=None):
@@ -142,8 +141,9 @@ class CommentOnImage(APIView):
                 image = found_image
             )
 
-            notification_views.create_notification(
-                user, found_image.creator, 'comment', image_id, found_image, serializer.data['message'])
+            if found_image.creator != user :
+                notification_views.create_notification(
+                    user, found_image.creator, 'comment', image_id, found_image, serializer.data['message'])
 
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 

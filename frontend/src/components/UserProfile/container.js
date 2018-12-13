@@ -25,12 +25,12 @@ class Container extends Component {
 		getProfile();
 	}
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	const { getProfile } = this.props;
-	// 	if(prevProps.match.params !== this.props.match.params){
-	// 		getProfile();
-	// 	}
-	// }
+	componentDidUpdate(prevProps, prevState) {
+		const { getProfile } = this.props;
+		if(prevProps.match.params !== this.props.match.params){
+			getProfile();
+		}
+	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.userProfile){

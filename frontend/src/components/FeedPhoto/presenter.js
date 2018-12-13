@@ -50,6 +50,7 @@ const FeedPhoto = (props, context) => {
 								caption={props.caption}
 								creator={props.creator.username}
 								comments={props.comments}
+								page={props.page}
 							/>
 						</div>
 						<PhotoActions
@@ -61,7 +62,9 @@ const FeedPhoto = (props, context) => {
 						<span className={styles.timeStamp}>
 							<TimeStamp time={props.natural_time} />
 						</span>
-						<CommentBox photoId={props.id} />
+						<div className={styles.commentInput}>
+							<CommentBox photoId={props.id} />
+						</div>
 					</div>
 				) }
 			</div>
@@ -129,7 +132,8 @@ FeedPhoto.propTypes = {
 			name: PropTypes.string
 		}).isRequired
 	),
-	mode: PropTypes.string
+	mode: PropTypes.string,
+	page: PropTypes.string
 }
 
 export default FeedPhoto;

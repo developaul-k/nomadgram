@@ -4,9 +4,9 @@ import styles from './styles.scss';
 
 const PhotoComments = props => (
 	<div className={styles.photoCommentsBox}>
-		<button type="button" onClick={props.handleToggle} className={styles.commentsToggle}>댓글 {props.comments.length}개 모두보기</button>
+		{ props.page !== 'detail' && props.comments.length > 3 ? <button type="button" onClick={props.handleToggle} className={styles.commentsToggle}>댓글 {props.comments.length}개 모두보기</button> : null }
 		<ul className={styles.photoComments}>
-			{ props.expanded ? (
+			{ props.expanded || props.page === "detail" ? (
 				props.comments.map( (comment, index) => (
 					<Comment username={comment.creator.username} comment={comment.message} key={comment.id} />
 				))
@@ -39,7 +39,8 @@ PhotoComments.propTypes = {
 		}),
 	).isRequired,
 	expanded: PropTypes.bool.isRequired,
-	handleToggle: PropTypes.func.isRequired
+	handleToggle: PropTypes.func.isRequired,
+	page: PropTypes.string,
 }
 
 export default PhotoComments;

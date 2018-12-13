@@ -41,25 +41,46 @@
 		}
 	}
 	&.feed-photo-row {
+		position: relative;
+		border: none;
 		max-width: $max-detail-card-width;
 		.content-box {
 			display: flex;
 			align-items: flex-start;
 			.feed-image {
 				width: 60%;
+				min-height: 435px;
+				background-color: #000;
+				display: flex;
+				align-items: center;
 				img {
 					width: 100%;
 					vertical-align: top;
 				}
 			}
 			.meta {
+				padding-bottom: 63px;
 				width: 40%;
+				min-height: 435px;
 				.header {
 					padding: 5px 0 15px;
 				}
 				.caption {
 					margin-top: 15px;
 				}
+				.comment-input {
+					position: absolute;
+					right: 0;
+					bottom: 0;
+					padding: 0 15px;
+					width: 40%;
+					box-sizing: border-box;
+				}
+			}
+			.comment-box {
+				max-height: 244px;
+				overflow: hidden;
+				overflow-y: auto;
 			}
 		}
 	}
@@ -67,6 +88,7 @@
 		padding: 15px;
 		padding-bottom: 0;
 		padding-top: 10px;
+		background-color: #fff;
 		.time-stamp {
 			font-size: 10px;
 			color: #999;

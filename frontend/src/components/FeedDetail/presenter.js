@@ -10,7 +10,7 @@ const FeedDetail = props => {
 	} else if (props.feed) {
 		return (
 			<div className={styles.imageDetail}>
-				<FeedPhoto {...props.feed} mode="row" />
+				<FeedPhoto {...props.feed} mode="row" page="detail" />
 			</div>
 		)
 	}
