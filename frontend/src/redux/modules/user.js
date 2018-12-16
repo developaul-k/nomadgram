@@ -349,6 +349,35 @@ function getFollowing(username) {
 	}
 }
 
+function putProfile(beforeUsername, username, name, website, bio, profileImage) {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch(`/users/${beforeUsername}/`, {
+			method: "PUT",
+			headers: {
+				Authorization: `JWT ${token}`,
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				username,
+				name,
+				website,
+				bio,
+				profileImage
+			})
+		})
+		.then(response => {
+			if(response.status === 401) {
+				dispatch(logout())
+			}
+			return response.json()
+		})
+		.then(json => {
+			dispatch( setUserProfile(json) )
+		})
+	}
+}
+
 // initial state
 const initialState = {
 	isLoggedIn: localStorage.getItem('jwt') ? true : false,
@@ -500,7 +529,8 @@ const actionCreators = {
 	getNotification,
 	getProfile,
 	getFollower,
-	getFollowing
+	getFollowing,
+	putProfile
 }
 
 export {

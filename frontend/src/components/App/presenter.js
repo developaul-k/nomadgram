@@ -11,9 +11,10 @@ import Search from 'components/Search';
 import UserProfile from 'components/UserProfile';
 import Modal from 'components/Modal';
 import FeedDetail from 'components/FeedDetail';
+import EditProfile from 'components/EditProfile';
 
 class App extends Component {
-	
+
 	previousLocation = this.props.location;
 
 	componentWillUpdate(nextProps) {
@@ -65,6 +66,7 @@ const PrivateRoutes = props => (
 			<Route exact path="/search/:searchTerm" component={Search} />
 			<Route exact path="/users/:username" component={UserProfile} />
 			<Route exact path="/images/:id" component={FeedDetail} />
+			<Route exact path="/account/edit/" component={EditProfile} />
 		</Switch>
 		{props.isModal ? <Route path="/images/:id" component={Modal} /> : null}
 	</div>

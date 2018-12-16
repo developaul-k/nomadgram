@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 import Loading from 'components/Loading';
 import PhotoDisplay from "components/PhotoDisplay";
 import UserList from 'components/UserList';
@@ -9,6 +10,7 @@ const UserProfile = (props, context) => {
 	const { userProfile, followerLayerOpen, followingLayerOpen, handleLayerClose } = props;
 	return(
 		<div className={styles.profile}>
+
 			{props.loading && <Loading />}
 
 			<div className={styles.content}>
@@ -27,6 +29,7 @@ const UserProfile = (props, context) => {
 							<div className={styles.profileInfo}>
 								<div className={styles.profileTop}>
 									<strong className={styles.username}>{userProfile.username}</strong>
+									<Link to="/account/edit/" className={styles.userProfileEdit}>프로필 편집</Link>
 								</div>
 								<ul className={styles.profileBtm}>
 									<li>게시물 <span>{userProfile.post_count}</span></li>
