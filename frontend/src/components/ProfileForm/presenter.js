@@ -6,17 +6,14 @@ import Loading from 'components/Loading';
 
 const ProfileForm = props => (
 	<div className={styles.formBox}>
-		<Form className={styles.form}>
+		<Form className={styles.form} onSubmit={props.handleSubmit}>
 			<div className={styles.formContainer}>
 				<div className={styles.formRow}>
 					<div className={styles.formDt}>
-						<button type="button" className={styles.imageChangeButton}>
-							<img src={props.profileImage} alt={props.username} />
-						</button>
+						<img src={props.profileImage} alt={props.username} />
 					</div>
 					<div className={styles.formDd}>
 						<h1 className={styles.username}>{props.userProfile.username}</h1>
-						<button type="button" className={styles.imageChangeText}>프로필 사진 바꾸기</button>
 					</div>
 				</div>
 				<div className={styles.formRow}>
@@ -67,38 +64,19 @@ const ProfileForm = props => (
 			<Button type="submit" className={styles.formSubmit}>
 				{!props.submitLoading ? <span>제출</span> : <Loading />}
 			</Button>
-			{ props.modalOpen && <RenderModal modalOpen={props.modalOpen} handleModalClose={props.handleModalClose} /> }
 		</Form>
 	</div>
 );
 
 ProfileForm.propTypes = {
+	name: PropTypes.string,
+	username: PropTypes.string,
+	website: PropTypes.string,
+	bio: PropTypes.string,
+	profileImage: PropTypes.string,
 	handleInputChange: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
-	handleModalOpen: PropTypes.func.isRequired,
-	handleModalClose: PropTypes.func.isRequired,
+	submitLoading: PropTypes.bool.isRequired,
 }
-
-const RenderModal = props => (
-	<div className={styles.modal}>
-		<div className={styles.modalMask} onClick={props.handleModalClose}></div>
-		<div className={styles.modalContents}>
-			<div className={styles.modalTitleArea}>
-				<h2 className={styles.modalTitle}>프로필 사진 바꾸기</h2>
-			</div>
-			<ul className={styles.modalMenuList}>
-				<li className={styles.modalMenuLi}>
-					<button type="button" className={styles.modalMenuButtonType1}>사진 업로드</button>
-				</li>
-				<li className={styles.modalMenuLi}>
-					<button type="button" className={styles.modalMenuButtonType2}>현재 사진 삭제</button>
-				</li>
-				<li className={styles.modalMenuLi}>
-					<button type="button" className={styles.modalMenuButtonType3} onClick={props.handleModalClose}>취소</button>
-				</li>
-			</ul>
-		</div>
-	</div>
-)
 
 export default ProfileForm;

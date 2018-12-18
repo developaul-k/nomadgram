@@ -29,7 +29,8 @@ const UserProfile = (props, context) => {
 							<div className={styles.profileInfo}>
 								<div className={styles.profileTop}>
 									<strong className={styles.username}>{userProfile.username}</strong>
-									<Link to="/account/edit/" className={styles.userProfileEdit}>프로필 편집</Link>
+									{ props.username === userProfile.username &&
+											<Link to="/account" className={styles.userProfileEdit}>프로필 편집</Link> }
 								</div>
 								<ul className={styles.profileBtm}>
 									<li>게시물 <span>{userProfile.post_count}</span></li>
@@ -69,6 +70,7 @@ UserProfile.propTypes = {
 	followerLayerOpen: PropTypes.func.isRequired,
 	followingLayerOpen: PropTypes.func.isRequired,
 	layerTitle: PropTypes.string.isRequired,
+	username: PropTypes.string.isRequired,
 }
 
 export default UserProfile;

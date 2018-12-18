@@ -373,7 +373,31 @@ function putProfile(beforeUsername, username, name, website, bio, profileImage) 
 			return response.json()
 		})
 		.then(json => {
+			console.log(json)
 			dispatch( setUserProfile(json) )
+		})
+	}
+}
+
+function putChangePassword(username, current_password, new_password) {
+	return (dispatch, getState) => {
+		const { user : { token } } = getState();
+		fetch(`/users/${username}/password/`, {
+			method: "PUT",
+			headers: {
+				Authorization: `JWT ${token}`,
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({
+				current_password,
+				new_password
+			})
+		})
+		.then(response => {
+			if(response.status === 401) {
+				dispatch(logout())
+			}
+			return alert('비밀번호 변경이 완료되었습니다.')
 		})
 	}
 }
@@ -530,7 +554,8 @@ const actionCreators = {
 	getProfile,
 	getFollower,
 	getFollowing,
-	putProfile
+	putProfile,
+	putChangePassword
 }
 
 export {

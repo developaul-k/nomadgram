@@ -54,6 +54,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
+    "react-router-tabs": "^1.2.0",
     "react-textarea-autosize": "^7.1.0-1",
     "react-validation": "^3.0.7",
     "reactotron-react-js": "^2.1.1",

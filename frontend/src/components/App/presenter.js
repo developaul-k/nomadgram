@@ -62,11 +62,11 @@ const PrivateRoutes = props => (
 	<div>
 		<Switch location={props.isModal ? props.prevLocation : props.location} >
 			<Route exact path="/" component={Feed} />
-			<Route exact path="/explore" component={Explore} />
-			<Route exact path="/search/:searchTerm" component={Search} />
-			<Route exact path="/users/:username" component={UserProfile} />
-			<Route exact path="/images/:id" component={FeedDetail} />
-			<Route exact path="/account/edit/" component={EditProfile} />
+			<Route path="/explore" component={Explore} />
+			<Route path="/search/:searchTerm" component={Search} />
+			<Route path="/users/:username" component={UserProfile} />
+			<Route path="/images/:id" component={FeedDetail} />
+			<Route path="/account" component={EditProfile} />
 		</Switch>
 		{props.isModal ? <Route path="/images/:id" component={Modal} /> : null}
 	</div>

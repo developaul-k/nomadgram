@@ -4,8 +4,8 @@ import { actionCreators as userActions } from 'redux/modules/user';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		putProfile: (username, changeUsername, name, website, bio, profileImage) => {
-			dispatch(userActions.putProfile(username, changeUsername, name, website, bio, profileImage))
+		putChangePassword: (current_password, new_password) => {
+			dispatch(userActions.putChangePassword(ownProps.userProfile.username, current_password, new_password))
 		}
 	}
 }

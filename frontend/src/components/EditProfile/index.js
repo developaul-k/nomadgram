@@ -14,9 +14,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		getProfile: (username) => {
 			dispatch(userActions.getProfile(username))
-		},
-		putProfile: (username, changeUsername, name, website, bio, profileImage) => {
-			dispatch(userActions.putProfile(username, changeUsername, name, website, bio, profileImage))
 		}
 	}
 }
