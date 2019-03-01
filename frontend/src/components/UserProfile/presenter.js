@@ -10,7 +10,6 @@ const UserProfile = (props, context) => {
 	const { userProfile, followerLayerOpen, followingLayerOpen, handleLayerClose } = props;
 	return(
 		<div className={styles.profile}>
-
 			{props.loading && <Loading />}
 
 			<div className={styles.content}>

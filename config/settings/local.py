@@ -9,9 +9,7 @@ DEBUG = True
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='NSerSmJ0arft5xshDxRg9yHqf5dRcwS5HWILv0pm7y1Xn3dLyiBKriCH69B25pD9')
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
-    "localhost",
-    "0.0.0.0",
-    "127.0.0.1",
+    '*'
 ]
 
 # CACHES

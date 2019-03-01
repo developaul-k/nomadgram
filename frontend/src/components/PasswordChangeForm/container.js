@@ -56,31 +56,29 @@ class Container extends Component {
 			})
 		})
 		.then(response => {
-			const _ = this;
 
 			if(response.status !== 200) {
-				_.setState({
+				this.setState({
 					modal: 'fail',
 					submitLoading: false
 				})
-				setTimeout(function(){
-					_.setState({
-						modal: ''
-					})
-				}, 2000)
+				this._modalClose(this)
 				return;
 			}
-			_.setState({
+			this.setState({
 				modal: 'complete'
 			})
-			setTimeout(function(){
-				_.setState({
-					modal: '',
-					submitLoading: false
-				})
-			}, 2000)
+			this._modalClose(this)
 			return
 		})
+	}
+
+	_modalClose = (self) => {
+		setTimeout(function(){
+			self.setState({
+				modal: ''
+			})
+		}, 2000)
 	}
 
 	static propTypes = {

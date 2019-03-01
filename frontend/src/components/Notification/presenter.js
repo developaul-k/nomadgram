@@ -15,6 +15,7 @@ const Notification = props => {
 					</div>
 				) : (
 					<ul className={styles.notificationUl}>
+						{console.log( props.notificationList )}
 						{props.notificationList.map(notification => 
 								<NotificationList notification={notification} closeNotification={props.closeNotification} key={notification.id} />)}
 					</ul>

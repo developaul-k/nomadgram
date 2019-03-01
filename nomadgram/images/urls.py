@@ -4,9 +4,9 @@ from . import views
 app_name = "feed"
 urlpatterns = [
     path(
-         "",
-         view=views.Images.as_view(),
-         name="feed"
+        "",
+        view=views.Images.as_view(),
+        name="feed"
     ),
     path(
         "<int:image_id>/",

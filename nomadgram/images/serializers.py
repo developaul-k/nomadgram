@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from . import models
 from nomadgram.users import models as user_models
-from taggit_serializer.serializers import (TagListSerializerField,
-                                           TaggitSerializer)
+from taggit_serializer.serializers import (TagListSerializerField, TaggitSerializer)
 
 class SmallImageSerializer(serializers.ModelSerializer):
 
@@ -30,8 +29,14 @@ class FeedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_models.User
         fields = (
+            'profile_image',
             'username',
-            'profile_image'
+            'name',
+            'bio',
+            'website',
+            'post_count',
+            'followers_count',
+            'following_count',
         )
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -58,6 +63,7 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
     creator = FeedUserSerializer()
     tags = TagListSerializerField()
     is_liked = serializers.SerializerMethodField()
+    likes = LikeSerializer(read_only=True)
 
     class Meta:
         model = models.Image
@@ -67,11 +73,14 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
             'location',
             'caption',
             'comments',
+            'likes',
             'like_count',
             'creator',
             'tags',
             'natural_time',
-            'is_liked'
+            'is_liked',
+            'is_vertical',
+            'comment_count',
         )
     def get_is_liked(self, obj):
         if 'request' in self.context:
@@ -85,6 +94,7 @@ class ImageSerializer(TaggitSerializer, serializers.ModelSerializer):
         return False
 
 class InputImageSerializer(serializers.ModelSerializer):
+    tags = TagListSerializerField()
 
     class Meta:
         model = models.Image
@@ -92,4 +102,5 @@ class InputImageSerializer(serializers.ModelSerializer):
             'file',
             'location',
             'caption',
+            'tags'
         )

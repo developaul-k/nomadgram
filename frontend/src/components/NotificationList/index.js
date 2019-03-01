@@ -16,8 +16,10 @@ const RenderNotification = (props, context) => {
 	const { notification, closeNotification } = props;
 	return (
 		<li className={styles.notificationLi} onClick={closeNotification}>
-			<Link to={`/images/${notification.image_id}/`}>
-				<span className={styles.notificationProfileImage}><img src={notification.creator.profile_image} alt={notification.creator.username} /></span>
+			<Link to={ `/images/${notification.image_id}/` }>
+				<span className={styles.notificationProfileImage}>
+					<img src={notification.creator.profile_image} alt={notification.creator.username} />
+				</span>
 				{ notification.notification_type === 'like' ? (
 					<span className={styles.notificationUsername}>
 						{notification.creator.username}님이 회원님의 사진을 좋아합니다.
@@ -30,7 +32,9 @@ const RenderNotification = (props, context) => {
 						<em className={styles.notificationDate}>{notification.natural_time}</em>
 					</span>
 				) }
-				<span className={styles.notificationImage}><img src={notification.image.file} alt={notification.to} /></span>
+				<span className={styles.notificationImage}>
+					<img src={notification.image.file} alt={notification.to} />
+				</span>
 			</Link>
 		</li>
 	)
@@ -40,13 +44,15 @@ const RenderFollowNotification = (props, context) => {
 	const { notification, closeNotification } = props;
 	return (
 		<li className={styles.notificationLi} onClick={closeNotification}>
-			<span className={styles.notificationProfileImage}>
-				<img src={notification.creator.profile_image} alt={notification.creator.username} />
-			</span>
-			<span className={styles.notificationUsername}>
-				{notification.creator.username}님이 팔로우를 요청했습니다.
-				<em className={styles.notificationDate}>{notification.natural_time}</em>
-			</span>
+			<Link to={ `/users/${notification.creator.username}/` }>
+				<span className={styles.notificationProfileImage}>
+					<img src={notification.creator.profile_image} alt={notification.creator.username} />
+				</span>
+				<span className={styles.notificationUsername}>
+					{notification.creator.username}님이 팔로우를 요청했습니다.
+					<em className={styles.notificationDate}>{notification.natural_time}</em>
+				</span>
+			</Link>
 		</li>
 	)
 }
