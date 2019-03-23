@@ -90,6 +90,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_DEFAULT_ACL = 'public-read'
 
+
 # STATIC
 # ------------------------
 
