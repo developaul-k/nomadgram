@@ -130,7 +130,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
         ]
     ),
 ]
-
+# TEST
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
