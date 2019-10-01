@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Route, Switch } from 'react-router-dom';
-import './styles.scss';
-import Navigation from 'components/Navigation';
-import Feed from 'components/Feed';
-import Footer from 'components/Footer';
-import Auth from 'components/Auth';
-import Explore from 'components/Explore';
-import Search from 'components/Search';
-import UserProfile from 'components/UserProfile';
-import Modal from 'components/Modal';
-import FeedDetail from 'components/FeedDetail';
-import EditProfile from 'components/EditProfile';
+import { Route, Switch } from "react-router-dom";
+import "./styles.scss";
+import Navigation from "components/Navigation";
+import Feed from "components/Feed";
+import Footer from "components/Footer";
+import Auth from "components/Auth";
+import Explore from "components/Explore";
+import Search from "components/Search";
+import UserProfile from "components/UserProfile";
+import Modal from "components/Modal";
+import FeedDetail from "components/FeedDetail";
+import EditProfile from "components/EditProfile";
 
 class App extends Component {
-
 	previousLocation = this.props.location;
 
 	componentWillUpdate(nextProps) {
@@ -40,8 +39,17 @@ class App extends Component {
 			// Nav,
 			// Routes,
 			this.props.isLoggedIn ? <Navigation key={1} /> : null,
-			this.props.isLoggedIn ? <PrivateRoutes isModal={isModal} location={location} prevLocation={this.previousLocation} key={2}/> : <PublicRoutes key={2}/>,
-			<Footer key={3}/>
+			this.props.isLoggedIn ? (
+				<PrivateRoutes
+					isModal={isModal}
+					location={location}
+					prevLocation={this.previousLocation}
+					key={2}
+				/>
+			) : (
+				<PublicRoutes key={2} />
+			),
+			<Footer key={3} />
 		];
 	}
 }
@@ -55,12 +63,13 @@ class App extends Component {
 // ];
 
 App.propTypes = {
-	isLoggedIn: PropTypes.bool.isRequired,
-}
+	isLoggedIn: PropTypes.bool.isRequired
+};
 
 const PrivateRoutes = props => (
 	<div>
-		<Switch location={props.isModal ? props.prevLocation : props.location} >
+		{console.log( props.location )}
+		<Switch location={props.isModal ? props.prevLocation : props.location}>
 			<Route exact path="/" component={Feed} />
 			<Route path="/explore" component={Explore} />
 			<Route path="/search/:searchTerm" component={Search} />
@@ -70,14 +79,14 @@ const PrivateRoutes = props => (
 		</Switch>
 		{props.isModal ? <Route path="/images/:id" component={Modal} /> : null}
 	</div>
-)
+);
 
 const PublicRoutes = props => (
 	<Switch>
 		<Route exact path="/" component={Auth} />
-		<Route exact path="/forgot" render={ () => "password" } />
+		<Route exact path="/forgot" render={() => "password"} />
 		<Route component={Auth} />
 	</Switch>
-)
+);
 
 export default App;

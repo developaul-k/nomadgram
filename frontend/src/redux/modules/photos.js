@@ -41,6 +41,7 @@ function addComment(photoId, comment) {
 function getFeed() {
 	return (dispatch, getState) => {
 		const { user : { token } } = getState();
+		console.log( token )
 		fetch('/images/', {
 			headers: {
 				'Authorization': `jwt ${token}`
